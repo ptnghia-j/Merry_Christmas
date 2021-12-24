@@ -1,51 +1,111 @@
-var snowPlayers = [];
-makeItSnow();
+const lights = document.querySelector(".tree__lights"),
+   balls = document.querySelector(".tree__balls");
 
-if (window.PointerEvent) {
-  document.body.addEventListener('pointerenter', lightUp, false);
-  document.body.addEventListener('pointerleave', dim, false);
-} else {
-  document.body.addEventListener('mouseenter', lightUp, false);
-  document.body.addEventListener('touchstart', lightUp, false);
-  document.body.addEventListener('touchend', dim, false);
-  document.body.addEventListener('mouseleave', dim, false);
-}
-document.body.addEventListener('keydown', lightUp, false);
-document.body.addEventListener('keyup', dim, false);
-
-function lightUp(e) {
-  e.preventDefault();
-  document.body.classList.add('huzzah');
-  if (snowPlayers.length && snowPlayers[0].playbackRate < 2) {
-    snowPlayers.forEach(function(item) {
-      item.playbackRate = item.playbackRate * 1.05;
-    })
-  }
-}
-function dim(e) {
-  e.preventDefault();
-  document.body.classList.remove('huzzah');
+function addLights() {
+   let template = `
+      <span></span>`;
+   for (let i = 0; i < 11; i++) {
+      lights.insertAdjacentHTML("beforeend", template);
+   }
 }
 
-function makeItSnow() {
-  var snows = document.querySelectorAll('.snow');
-  
-  if (!snows[0].animate) {
-    return false;
-  }
-
-  for (var i = 0, len = snows.length; i < len; ++i) {
-    var snowball = snows[i];
-    var scale = Math.random() * .8 + .2;
-    var player = snowball.animate([
-      { transform: 'translate3d(' + (i/len*100) + 'vw,0,0) scale(' + scale + ')', opacity: scale },
-      { transform: 'translate3d(' + (i/len*100 + 10) + 'vw,100vh,0) scale(' + scale + ')', opacity: scale }
-    ], {
-      duration: Math.random() * 3000 + 2000,
-      iterations: Infinity,
-      delay: -(Math.random() * 5000)
-    });
-    
-    snowPlayers.push(player);
-  }
+function addBalls() {
+   let template = `
+      <span></span>`;
+   for (let i = 0; i < 9; i++) {
+      balls.insertAdjacentHTML("beforeend", template);
+   }
 }
+
+// Get Message ans Split Chars
+
+function text() {
+   const message = "Merry Christmas",
+      messageText = document.querySelector(".message"),
+      messageSplit = message.split("");
+
+   messageSplit.forEach(function (el) {
+      let template = `
+      <p class="message__letter">
+        ${el}
+      </p>`;
+
+      messageText.insertAdjacentHTML("beforeend", template);
+   });
+}
+
+// Functions
+addLights();
+addBalls();
+text();
+
+function particles() {
+   particlesJS("particles-js", {
+      particles: {
+         number: { value: 80, density: { enable: true, value_area: 800 } },
+         color: { value: "#ffffff" },
+         shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+            image: { src: "", width: 100, height: 100 }
+         },
+         opacity: {
+            value: 0.8,
+            random: true,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false }
+         },
+         size: {
+            value: 3.5,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false }
+         },
+         line_linked: {
+            enable: false,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1
+         },
+         move: {
+            enable: true,
+            speed: 4.810236182596568,
+            direction: "bottom",
+            random: true,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: {
+               enable: false,
+               rotateX: 721.5354273894853,
+               rotateY: 1283
+            }
+         }
+      },
+      interactivity: {
+         detect_on: "canvas",
+         events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true
+         },
+         modes: {
+            grab: { distance: 400, line_linked: { opacity: 1 } },
+            bubble: {
+               distance: 400,
+               size: 40,
+               duration: 2,
+               opacity: 8,
+               speed: 3
+            },
+            repulse: { distance: 100, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 }
+         }
+      },
+      retina_detect: true
+   });
+}
+
+particles();
+
