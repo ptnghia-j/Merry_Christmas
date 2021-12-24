@@ -1,50 +1,51 @@
-onload = function (){
-	c = canvas.getContext('2d');
-	canvas.width = W = innerWidth;
-	canvas.height = H = innerHeight;
-	var amplitude = [];
-	var frequency = [];
-	var speed = [];
-	var snow = 400;
-	var tilt = [];
-	var addX = [];
-	var y = []
-	var r = []
-	function setUp(){
-		for(i = 0; i < snow; i++){
-			y[i] = Math.floor(Math.random()*H);
-			addX[i] = Math.floor(Math.random()*W *3/2-W/2);
-			r[i] = Math.floor(Math.random()*4+1)
-			frequency[i] = Math.floor(Math.random()*20+20)
-			amplitude[i] = Math.floor(Math.random()*6+2)
-			speed[i] = Math.random()+1
-			tilt[i] = 0;
-		}
-	}
-	setUp();
-	function reset(i){
-		y[i] = Math.floor(Math.random()*-50);
-		addX[i] = Math.floor(Math.random()*W*3/2-W/3*2);
-		r[i] = Math.floor(Math.random()*4+1)
-		frequency[i] = Math.floor(Math.random()*20+20)
-		amplitude[i] = Math.floor(Math.random()*6+2)
-		tilt[i] = 0;
-	}
-	function draw(){
-			c.clearRect(0, 0, canvas.width, canvas.height);
-		for(i = 0; i < snow; i++){
-	  		y[i]+=speed[i];
-			x = amplitude[i] * Math.cos(y[i]/frequency[i]) + addX[i] + tilt[i]
-			c.beginPath()
-	  		c.arc(x, y[i], r[i], 0, Math.PI * 2)
-	  		c.fillStyle = "white"
-	  		c.fill()
-	  		tilt[i]+=.5;
-	  		if(y[i] > H || x > W){
-	  			reset(i);
-	  		}
-	  	}
-	  	requestAnimationFrame(draw);
-	}
-	requestAnimationFrame(draw);
+var snowPlayers = [];
+makeItSnow();
+
+if (window.PointerEvent) {
+  document.body.addEventListener('pointerenter', lightUp, false);
+  document.body.addEventListener('pointerleave', dim, false);
+} else {
+  document.body.addEventListener('mouseenter', lightUp, false);
+  document.body.addEventListener('touchstart', lightUp, false);
+  document.body.addEventListener('touchend', dim, false);
+  document.body.addEventListener('mouseleave', dim, false);
+}
+document.body.addEventListener('keydown', lightUp, false);
+document.body.addEventListener('keyup', dim, false);
+
+function lightUp(e) {
+  e.preventDefault();
+  document.body.classList.add('huzzah');
+  if (snowPlayers.length && snowPlayers[0].playbackRate < 2) {
+    snowPlayers.forEach(function(item) {
+      item.playbackRate = item.playbackRate * 1.05;
+    })
+  }
+}
+function dim(e) {
+  e.preventDefault();
+  document.body.classList.remove('huzzah');
+}
+
+function makeItSnow() {
+  var snows = document.querySelectorAll('.snow');
+  
+  if (!snows[0].animate) {
+    return false;
+  }
+
+  for (var i = 0, len = snows.length; i < len; ++i) {
+    var snowball = snows[i];
+    var scale = Math.random() * .8 + .2;
+    var player = snowball.animate([
+      { transform: 'translate3d(' + (i/len*100) + 'vw,0,0) scale(' + scale + ')', opacity: scale },
+      { transform: 'translate3d(' + (i/len*100 + 10) + 'vw,100vh,0) scale(' + scale + ')', opacity: scale }
+    ], {
+      duration: Math.random() * 3000 + 2000,
+      iterations: Infinity,
+      delay: -(Math.random() * 5000)
+    });
+    
+    snowPlayers.push(player);
+  }
 }
