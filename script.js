@@ -34,6 +34,7 @@ function text() {
    });
 }
 
+
 // Functions
 addLights();
 addBalls();
@@ -108,4 +109,3 @@ function particles() {
 }
 
 particles();
-

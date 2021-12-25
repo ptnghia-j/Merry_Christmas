@@ -73,9 +73,59 @@ body {
    background-color: #253965;
 }
 
+// canvas {
+//    display: absolute;
+//    vertical-align: bottom;
+// }
+
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(#123, #111);
+}
+
+.snowflake {
+  --size: 1vw;
+  width: var(--size);
+  height: var(--size);
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: -5vh;
+}
+
+@keyframes snowfall {
+  0% {
+    transform: translate3d(var(--left-ini), 0, 0);
+  }
+  100% {
+    transform: translate3d(var(--left-end), 110vh, 0);
+  }
+}
+
+@for $i from 1 through 50 {
+  .snowflake:nth-child(#{$i}) {
+    --size: #{random(5) * 0.2}vw;
+    --left-ini: #{random(20) - 10}vw;
+    --left-end: #{random(20) - 10}vw;
+    left: #{random(100)}vw;
+    animation: snowfall #{5 + random(10)}s linear infinite;
+    animation-delay: -#{random(10)}s;
+  }
+}
+
+/* added small blur every 6 snowflakes*/
+.snowflake:nth-child(6n) {
+  filter: blur(1px);
+}
+
 canvas {
-   display: block;
-   vertical-align: bottom;
+  width: 100%;
+  height: 100%;
 }
 
 #particles-js {
@@ -110,6 +160,7 @@ canvas {
       transform: scale(0.4);
    }
 }
+
 .message {
    display: flex;
    justify-content: center;
@@ -699,7 +750,7 @@ canvas {
       &:after {
          width: 24px;
          height: 4px;
-         transform: translatex(16px);
+         transform: translateX(16px);
          background-color: $yellow;
       }
    }
@@ -1079,19 +1130,18 @@ canvas {
 
          @keyframes present {
             0% {
-               transform: translatex(0px);
+               transform: translateX(0px);
             }
             33% {
-               transform: translatex(10px);
+               transform: translateX(10px);
             }
             66% {
-               transform: translatex(-10px);
+               transform: translateX(-10px);
             }
             100% {
-               transform: translatex(0px);
+               transform: translateX(0px);
             }
          }
       }
    }
 }
-
