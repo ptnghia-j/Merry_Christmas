@@ -115,10 +115,17 @@
         </svg>
     </div>
       
-    <audio id="song" loop="loop" autoplay>
-        
-      <source src=" https://jesusful.com/wp-content/uploads/music/2020/09/Boney_M_-_Jingle_Bells_(Jesusful.com).mp3 ">
-  </audio>
+    <audio controls autoplay style="display:none;" loop id="audio">
+      <source id="audio-source"
+      src="https://media1.vocaroo.com/mp3/11VAeEHyzQm1"> </audio><script>
+function playAudio(audio_element) {
+	var x = document.getElementById(audio);
+	x.play();
+}
+</script>
+    <!-- <audio controls style="display:none;" loop id="audio">
+      <source id="audio-source"
+      src="https://media1.vocaroo.com/mp3/11VAeEHyzQm1"> </audio> -->
     
 	</body>
 </html> 
